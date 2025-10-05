@@ -62,8 +62,8 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
-      <div className="w-full max-w-[448px]">
+    <div className="flex min-h-screen items-center justify-center p-4" style={{ backgroundColor: '#F9FAFB' }}>
+      <div className="w-full" style={{ maxWidth: '448px' }}>
         {/* ヘッダー */}
         <div className="flex flex-col items-center">
           {/* アイコン背景 */}
@@ -72,14 +72,14 @@ export default function LoginPage() {
           </div>
           
           {/* タイトル */}
-          <div className="mt-8 text-center">
+          <div className="mt-4 text-center">
             <h1 className="text-2xl font-semibold leading-[1.33] text-[#101828]" style={{ fontFamily: 'SF Pro Text, -apple-system, BlinkMacSystemFont, sans-serif' }}>
               HR Management System
             </h1>
           </div>
           
           {/* サブタイトル */}
-          <div className="mt-4 text-center">
+          <div className="mt-10 text-center">
             <p className="text-base font-light leading-[1.5] text-[#4A5565]" style={{ fontFamily: 'Hiragino Kaku Gothic ProN, sans-serif' }}>
               人事労務管理システムにログイン
             </p>
@@ -87,7 +87,7 @@ export default function LoginPage() {
         </div>
 
         {/* ログインカード */}
-        <div className="mt-8 rounded-[10px] bg-white px-6 pb-4 pt-6 shadow-[0px_1px_2px_-1px_rgba(0,0,0,0.1),0px_1px_3px_0px_rgba(0,0,0,0.1)]">
+        <div className="mt-16 rounded-[10px] bg-white px-6 pb-4 pt-6 shadow-[0px_1px_2px_-1px_rgba(0,0,0,0.1),0px_1px_3px_0px_rgba(0,0,0,0.1)]">
           {/* カード見出し */}
           <h2 className="mb-8 text-center text-xl font-light leading-[1.4] text-[#101828]" style={{ fontFamily: 'Hiragino Kaku Gothic ProN, sans-serif' }}>
             ログイン
