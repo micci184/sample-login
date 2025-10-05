@@ -79,7 +79,68 @@ sample-login/
 
 ## API仕様
 
-OpenAPI仕様は `openapi.yaml` を参照
+### OpenAPI定義
+
+API仕様は `openapi.yaml` に定義されています。
+
+#### 📖 仕様の確認方法
+
+**1. Swagger EditorでYAMLを開く**
+```bash
+# オンラインエディタにコピー＆ペースト
+https://editor.swagger.io/
+```
+
+**2. VS Code拡張機能を使用**
+- [OpenAPI (Swagger) Editor](https://marketplace.visualstudio.com/items?itemName=42Crunch.vscode-openapi)
+- `openapi.yaml` を開いてプレビュー
+
+**3. Redocでドキュメント生成**
+```bash
+npx @redocly/cli build-docs openapi.yaml
+```
+
+### スキーマと型定義の整合性
+
+OpenAPI定義とZodスキーマは完全に整合しています：
+
+| OpenAPI Schema | Zod Schema | TypeScript Type |
+|---------------|------------|-----------------|
+| `LoginRequest` | `loginSchema` | `LoginInput` |
+| `User` | `userSchema` | `User` |
+| `LoginSuccessResponse` | `loginSuccessResponseSchema` | `LoginSuccessResponse` |
+| `ErrorResponse` | `errorResponseSchema` | `ErrorResponse` |
+
+詳細は `lib/schemas/auth.ts` を参照してください。
+
+### エンドポイント一覧
+
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/api/auth/login` | ログイン認証 |
+
+### レスポンス例
+
+**成功時 (200)**
+```json
+{
+  "success": true,
+  "message": "ログインに成功しました",
+  "user": {
+    "id": "user_12345",
+    "email": "user@example.com"
+  }
+}
+```
+
+**エラー時 (401)**
+```json
+{
+  "success": false,
+  "message": "メールアドレスまたはパスワードが正しくありません",
+  "code": "INVALID_CREDENTIALS"
+}
+```
 
 ## Issues
 
