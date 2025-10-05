@@ -45,6 +45,14 @@ npm run type-check
 npm run lint
 ```
 
+### 6. Prismモックサーバー起動
+
+```bash
+npm run mock
+```
+
+モックAPIサーバーが [http://localhost:4010](http://localhost:4010) で起動します。
+
 ## プロジェクト構造
 
 ```
@@ -141,6 +149,144 @@ OpenAPI定義とZodスキーマは完全に整合しています：
   "code": "INVALID_CREDENTIALS"
 }
 ```
+
+## Prismモックサーバー
+
+### 🎯 概要
+
+PrismはOpenAPI定義から自動でモックAPIサーバーを生成するツールです。  
+コード実装なしで、`openapi.yaml`に定義されたエンドポイントが即座に動作します。
+
+### 🚀 使用方法
+
+#### 基本的な起動
+
+```bash
+npm run mock
+```
+
+- デフォルトポート: `http://localhost:4010`
+- OpenAPI定義の`examples`に基づいたレスポンスを返却
+- リクエストのバリデーション自動実行
+
+#### 動的レスポンス生成
+
+```bash
+npm run mock:dynamic
+```
+
+- `-d`フラグで動的にランダムなデータを生成
+- テストデータのバリエーションを増やしたい場合に有用
+
+#### ポート指定
+
+```bash
+npm run mock:port
+```
+
+- ポート4010を明示的に指定
+- 環境変数`NEXT_PUBLIC_MOCK_API_URL`と一致
+
+### 📝 開発ワークフロー
+
+**推奨: 2つのターミナルで並行実行**
+
+```bash
+# ターミナル1: Next.js開発サーバー
+npm run dev
+# → http://localhost:3000
+
+# ターミナル2: Prismモックサーバー
+npm run mock
+# → http://localhost:4010
+```
+
+フロントエンドから`http://localhost:4010/api/auth/login`にリクエストを送信できます。
+
+### 🧪 動作確認
+
+#### ログインAPI（成功）
+
+```bash
+curl -X POST http://localhost:4010/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "user@example.com",
+    "password": "password123",
+    "rememberMe": false
+  }'
+```
+
+**レスポンス:**
+```json
+{
+  "success": true,
+  "message": "ログインに成功しました",
+  "user": {
+    "id": "user_12345",
+    "email": "user@example.com"
+  }
+}
+```
+
+#### バリデーションエラー（400）
+
+```bash
+curl -X POST http://localhost:4010/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "invalid-email",
+    "password": "short"
+  }'
+```
+
+**レスポンス:**
+```json
+{
+  "success": false,
+  "message": "有効なメールアドレスを入力してください",
+  "code": "VALIDATION_ERROR"
+}
+```
+
+### ⚙️ 環境変数
+
+`.env.local.example`をコピーして`.env.local`を作成：
+
+```bash
+cp .env.local.example .env.local
+```
+
+**設定例:**
+```env
+# Prismモックサーバー（開発時）
+NEXT_PUBLIC_MOCK_API_URL=http://localhost:4010
+
+# Next.js APIルート（本番時）
+NEXT_PUBLIC_API_URL=http://localhost:3000/api
+```
+
+### 📚 Prismコマンドオプション
+
+| オプション | 説明 |
+|-----------|------|
+| `-d, --dynamic` | 動的にランダムデータを生成 |
+| `-p, --port <port>` | ポート番号を指定 |
+| `--host <host>` | ホスト名を指定 |
+| `-h, --help` | ヘルプ表示 |
+
+### ⚠️ 注意事項
+
+- **開発用途のみ**: 本番環境では使用しない
+- **データ永続化なし**: リクエスト間でデータは保持されない
+- **認証なし**: すべてのリクエストが`examples`に基づいて返却される
+
+### 💡 利点
+
+1. ✅ **即座にAPI動作確認**: コード実装前にフロントエンド開発開始
+2. ✅ **OpenAPI定義の検証**: 定義ミスを即座に発見
+3. ✅ **バックエンド待ちなし**: フロントエンドとバックエンドの並行開発
+4. ✅ **自動バリデーション**: リクエストが仕様に準拠しているか自動チェック
 
 ## Issues
 
