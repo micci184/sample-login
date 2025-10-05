@@ -21,13 +21,13 @@ info:
     name: MIT
 
 servers:
-  - url: http://localhost:3000/api
+  - url: http://localhost:3000
     description: ローカル開発環境
   - url: http://localhost:4010
     description: Prismモックサーバー
 
 paths:
-  /auth/login:
+  /api/auth/login:
     post:
       summary: ログイン
       description: |
@@ -142,19 +142,19 @@ paths:
                     code: RATE_LIMIT_EXCEEDED
 
   # 将来のエンドポイント（プレースホルダー）
-  # /auth/logout:
+  # /api/auth/logout:
   #   post:
   #     summary: ログアウト
   #     tags:
   #       - 認証
   
-  # /auth/refresh:
+  # /api/auth/refresh:
   #   post:
   #     summary: トークンリフレッシュ
   #     tags:
   #       - 認証
   
-  # /auth/forgot-password:
+  # /api/auth/forgot-password:
   #   post:
   #     summary: パスワードリセット要求
   #     tags:
