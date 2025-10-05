@@ -65,22 +65,22 @@ export default function LoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
       <div className="w-full max-w-[448px]">
         {/* ヘッダー */}
-        <div className="flex flex-col items-center gap-8">
+        <div className="flex flex-col items-center">
           {/* アイコン背景 */}
           <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#155DFC] p-4">
             <Building2 className="h-8 w-8 text-white" strokeWidth={2.67} />
           </div>
           
           {/* タイトル */}
-          <div className="text-center">
-            <h1 className="text-2xl font-semibold leading-[1.33] text-[#101828]">
+          <div className="mt-8 text-center">
+            <h1 className="text-2xl font-semibold leading-[1.33] text-[#101828]" style={{ fontFamily: 'SF Pro Text, -apple-system, BlinkMacSystemFont, sans-serif' }}>
               HR Management System
             </h1>
           </div>
           
           {/* サブタイトル */}
-          <div className="text-center">
-            <p className="text-base font-light leading-[1.5] text-[#4A5565]">
+          <div className="mt-4 text-center">
+            <p className="text-base font-light leading-[1.5] text-[#4A5565]" style={{ fontFamily: 'Hiragino Kaku Gothic ProN, sans-serif' }}>
               人事労務管理システムにログイン
             </p>
           </div>
@@ -89,17 +89,18 @@ export default function LoginPage() {
         {/* ログインカード */}
         <div className="mt-8 rounded-[10px] bg-white px-6 pb-4 pt-6 shadow-[0px_1px_2px_-1px_rgba(0,0,0,0.1),0px_1px_3px_0px_rgba(0,0,0,0.1)]">
           {/* カード見出し */}
-          <h2 className="mb-8 text-center text-xl font-light leading-[1.4] text-[#101828]">
+          <h2 className="mb-8 text-center text-xl font-light leading-[1.4] text-[#101828]" style={{ fontFamily: 'Hiragino Kaku Gothic ProN, sans-serif' }}>
             ログイン
           </h2>
 
           {/* フォーム */}
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             {/* メールアドレス */}
-            <div className="space-y-1">
+            <div className="flex flex-col gap-1">
               <label
                 htmlFor="email"
                 className="block text-sm font-light leading-[1.43] text-[#364153]"
+                style={{ fontFamily: 'Hiragino Kaku Gothic ProN, sans-serif' }}
               >
                 メールアドレス
               </label>
@@ -128,10 +129,11 @@ export default function LoginPage() {
             </div>
 
             {/* パスワード */}
-            <div className="space-y-1">
+            <div className="flex flex-col gap-1">
               <label
                 htmlFor="password"
                 className="block text-sm font-light leading-[1.43] text-[#364153]"
+                style={{ fontFamily: 'Hiragino Kaku Gothic ProN, sans-serif' }}
               >
                 パスワード
               </label>
@@ -175,7 +177,7 @@ export default function LoginPage() {
             </div>
 
             {/* ログイン状態を保持 & パスワードを忘れた */}
-            <div className="flex items-center justify-between py-2">
+            <div className="flex items-center justify-between">
               <Checkbox
                 id="remember-me"
                 label="ログイン状態を保持する"
@@ -186,6 +188,7 @@ export default function LoginPage() {
               <a
                 href="#"
                 className="text-sm font-light text-[#6A7282] hover:underline focus:outline-none focus:ring-2 focus:ring-[#155DFC] focus:ring-offset-2"
+                style={{ fontFamily: 'Hiragino Kaku Gothic ProN, sans-serif' }}
                 onClick={(e) => {
                   e.preventDefault();
                   // TODO: Issue #10 でパスワード再設定実装
@@ -197,23 +200,19 @@ export default function LoginPage() {
             </div>
 
             {/* ログインボタン */}
-            <div className="pt-2">
-              <Button
-                type="submit"
-                variant="primary"
-                loading={loading}
-                className="w-full"
-              >
-                ログイン
-              </Button>
-            </div>
+            <Button
+              type="submit"
+              variant="primary"
+              loading={loading}
+              className="w-full"
+            >
+              ログイン
+            </Button>
           </form>
 
           {/* 区切り線 */}
           <div className="relative my-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-[#D1D5DC]"></div>
-            </div>
+            <div className="w-full border-t border-[#D1D5DC]"></div>
           </div>
 
           {/* 初めてご利用の方 */}
@@ -221,6 +220,7 @@ export default function LoginPage() {
             <a
               href="#"
               className="text-sm font-light text-[#6A7282] hover:underline focus:outline-none focus:ring-2 focus:ring-[#155DFC] focus:ring-offset-2"
+              style={{ fontFamily: 'Hiragino Kaku Gothic ProN, sans-serif' }}
               onClick={(e) => {
                 e.preventDefault();
                 // TODO: 別Issueで新規登録実装
