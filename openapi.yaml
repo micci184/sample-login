@@ -2,95 +2,263 @@ openapi: 3.0.0
 info:
   title: HR Management System API
   version: 1.0.0
-  description: 人事労務管理システムのAPI仕様
+  description: |
+    人事労務管理システムのAPI仕様
+    
+    ## 認証フロー
+    1. `/auth/login` でログイン認証
+    2. 成功時にユーザー情報を取得
+    3. "ログイン状態を保持する"を選択した場合は永続セッション
+    
+    ## エラーハンドリング
+    - すべてのエラーレスポンスは `ErrorResponse` スキーマに準拠
+    - バリデーションエラーは400、認証エラーは401、アカウントロックは423を返却
+
+  contact:
+    name: API Support
+    email: support@example.com
+  license:
+    name: MIT
 
 servers:
   - url: http://localhost:3000/api
     description: ローカル開発環境
+  - url: http://localhost:4010
+    description: Prismモックサーバー
 
 paths:
   /auth/login:
     post:
       summary: ログイン
-      description: メールアドレスとパスワードでログイン認証を行う
+      description: |
+        メールアドレスとパスワードでログイン認証を行う
+        
+        ## バリデーションルール
+        - email: 有効なメールアドレス形式
+        - password: 最小8文字
+        - rememberMe: オプション（デフォルト: false）
       operationId: login
+      tags:
+        - 認証
       requestBody:
         required: true
+        description: ログイン情報
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - email
-                - password
-              properties:
-                email:
-                  type: string
-                  format: email
-                  example: user@example.com
-                password:
-                  type: string
-                  format: password
-                  minLength: 8
-                  example: password123
-                rememberMe:
-                  type: boolean
-                  default: false
+              $ref: '#/components/schemas/LoginRequest'
+            examples:
+              basic:
+                summary: 基本的なログイン
+                value:
+                  email: user@example.com
+                  password: password123
+                  rememberMe: false
+              rememberMe:
+                summary: ログイン状態を保持
+                value:
+                  email: user@example.com
+                  password: securePassword456
+                  rememberMe: true
       responses:
         "200":
           description: ログイン成功
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  message:
-                    type: string
-                    example: ログインに成功しました
-                  user:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                      email:
-                        type: string
+                $ref: '#/components/schemas/LoginSuccessResponse'
+              examples:
+                success:
+                  summary: 成功レスポンス
+                  value:
+                    success: true
+                    message: ログインに成功しました
+                    user:
+                      id: "user_12345"
+                      email: user@example.com
+        "400":
+          description: バリデーションエラー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalidEmail:
+                  summary: 無効なメールアドレス
+                  value:
+                    success: false
+                    message: 有効なメールアドレスを入力してください
+                    code: VALIDATION_ERROR
+                shortPassword:
+                  summary: パスワードが短い
+                  value:
+                    success: false
+                    message: パスワードは8文字以上である必要があります
+                    code: VALIDATION_ERROR
+                missingField:
+                  summary: 必須フィールド不足
+                  value:
+                    success: false
+                    message: emailとpasswordは必須です
+                    code: VALIDATION_ERROR
         "401":
           description: 認証情報が無効
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: false
-                  message:
-                    type: string
-                    example: メールアドレスまたはパスワードが正しくありません
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalidCredentials:
+                  summary: 認証失敗
+                  value:
+                    success: false
+                    message: メールアドレスまたはパスワードが正しくありません
+                    code: INVALID_CREDENTIALS
         "423":
           description: アカウントがロックされている
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: false
-                  message:
-                    type: string
-                    example: アカウントがロックされています
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                accountLocked:
+                  summary: アカウントロック
+                  value:
+                    success: false
+                    message: アカウントがロックされています。サポートにお問い合わせください。
+                    code: ACCOUNT_LOCKED
+        "429":
+          description: レート制限超過（オプション）
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                tooManyRequests:
+                  summary: リクエスト過多
+                  value:
+                    success: false
+                    message: リクエストが多すぎます。しばらくしてから再試行してください。
+                    code: RATE_LIMIT_EXCEEDED
+
+  # 将来のエンドポイント（プレースホルダー）
+  # /auth/logout:
+  #   post:
+  #     summary: ログアウト
+  #     tags:
+  #       - 認証
+  
+  # /auth/refresh:
+  #   post:
+  #     summary: トークンリフレッシュ
+  #     tags:
+  #       - 認証
+  
+  # /auth/forgot-password:
+  #   post:
+  #     summary: パスワードリセット要求
+  #     tags:
+  #       - 認証
 
 components:
   schemas:
-    Error:
+    LoginRequest:
       type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          description: ログインユーザーのメールアドレス
+          example: user@example.com
+          minLength: 3
+          maxLength: 255
+        password:
+          type: string
+          format: password
+          description: ログインパスワード
+          example: password123
+          minLength: 8
+          maxLength: 128
+        rememberMe:
+          type: boolean
+          description: ログイン状態を保持するかどうか
+          default: false
+          example: false
+
+    User:
+      type: object
+      required:
+        - id
+        - email
+      properties:
+        id:
+          type: string
+          description: ユーザーの一意識別子
+          example: user_12345
+        email:
+          type: string
+          format: email
+          description: ユーザーのメールアドレス
+          example: user@example.com
+        name:
+          type: string
+          description: ユーザー名（オプション）
+          example: 山田太郎
+        createdAt:
+          type: string
+          format: date-time
+          description: アカウント作成日時
+          example: "2025-01-01T00:00:00Z"
+
+    LoginSuccessResponse:
+      type: object
+      required:
+        - success
+        - message
+        - user
       properties:
         success:
           type: boolean
+          description: リクエストの成否
+          example: true
+        message:
+          type: string
+          description: 成功メッセージ
+          example: ログインに成功しました
+        user:
+          $ref: '#/components/schemas/User'
+
+    ErrorResponse:
+      type: object
+      required:
+        - success
+        - message
+      properties:
+        success:
+          type: boolean
+          description: リクエストの成否
           example: false
         message:
           type: string
+          description: エラーメッセージ（日本語）
+          example: メールアドレスまたはパスワードが正しくありません
+        code:
+          type: string
+          description: エラーコード（機械可読）
+          enum:
+            - VALIDATION_ERROR
+            - INVALID_CREDENTIALS
+            - ACCOUNT_LOCKED
+            - RATE_LIMIT_EXCEEDED
+          example: INVALID_CREDENTIALS
+        details:
+          type: object
+          description: エラー詳細情報（オプション）
+          additionalProperties: true
+
+tags:
+  - name: 認証
+    description: ユーザー認証関連のエンドポイント
