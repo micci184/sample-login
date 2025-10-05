@@ -10,7 +10,9 @@
     "type-check": "tsc --noEmit",
     "mock": "prism mock openapi.yaml",
     "mock:dynamic": "prism mock -d openapi.yaml",
-    "mock:port": "prism mock -p 4010 openapi.yaml"
+    "mock:port": "prism mock -p 4010 openapi.yaml",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "lucide-react": "^0.469.0",
@@ -20,14 +22,26 @@
     "zod": "^4.1.11"
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "^4.1.1",
     "@stoplight/prism-cli": "^5.14.2",
+    "@storybook/addon-a11y": "^9.1.10",
+    "@storybook/addon-docs": "^9.1.10",
+    "@storybook/addon-onboarding": "^9.1.10",
+    "@storybook/addon-vitest": "^9.1.10",
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.1.4",
+    "eslint-plugin-storybook": "^9.1.10",
     "postcss": "^8",
+    "storybook": "^9.1.10",
     "tailwindcss": "^4.1.0",
-    "typescript": "^5"
+    "typescript": "^5",
+    "@storybook/nextjs-vite": "^9.1.10",
+    "vitest": "^3.2.4",
+    "@vitest/browser": "^3.2.4",
+    "playwright": "^1.55.1",
+    "@vitest/coverage-v8": "^3.2.4"
   }
 }

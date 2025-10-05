@@ -10,6 +10,7 @@
 - **TypeScript**
 - **Zod 4.1.11** (バリデーション)
 - **Lucide React** (アイコン)
+- **Storybook 9** (コンポーネント開発環境)
 
 ## セットアップ手順
 
@@ -45,7 +46,15 @@ npm run type-check
 npm run lint
 ```
 
-### 6. Prismモックサーバー起動
+### 6. Storybook起動
+
+```bash
+npm run storybook
+```
+
+コンポーネントカタログが [http://localhost:6006](http://localhost:6006) で起動します。
+
+### 7. Prismモックサーバー起動
 
 ```bash
 npm run mock
@@ -287,6 +296,95 @@ NEXT_PUBLIC_API_URL=http://localhost:3000/api
 2. ✅ **OpenAPI定義の検証**: 定義ミスを即座に発見
 3. ✅ **バックエンド待ちなし**: フロントエンドとバックエンドの並行開発
 4. ✅ **自動バリデーション**: リクエストが仕様に準拠しているか自動チェック
+
+## Storybook
+
+### 🎨 概要
+
+Storybookは各UIコンポーネントを独立した環境で開発・テスト・ドキュメント化するツールです。
+
+### 🚀 使用方法
+
+#### 起動
+
+```bash
+npm run storybook
+```
+
+ブラウザで [http://localhost:6006](http://localhost:6006) を開くと、コンポーネントカタログが表示されます。
+
+#### ビルド
+
+```bash
+npm run build-storybook
+```
+
+静的HTMLとして `storybook-static/` にビルドされます。
+
+### 📚 実装済みコンポーネント
+
+| コンポーネント | ファイル | ストーリー数 |
+|--------------|---------|------------|
+| **Input** | `components/ui/input.tsx` | 6 stories |
+| **Button** | `components/ui/button.tsx` | 8 stories |
+| **Checkbox** | `components/ui/checkbox.tsx` | 9 stories |
+
+### ✨ 機能
+
+1. **インタラクティブコントロール**: propsをGUIで操作して動作確認
+2. **自動ドキュメント生成**: 型定義とpropsを自動抽出
+3. **アクセシビリティチェック**: a11yアドオンで自動検証
+4. **アクションログ**: イベントハンドラーの呼び出しを確認
+5. **レスポンシブビュー**: 各デバイスサイズでの表示確認
+
+### 📖 ストーリーの例
+
+各コンポーネントは以下のようなストーリーを持ちます:
+
+- **Input**
+  - Default（アイコンなし）
+  - WithMailIcon（メールアイコン）
+  - WithLockIcon（ロックアイコン）
+  - ErrorState（エラー状態）
+  - Disabled（無効状態）
+  - Filled（入力済み）
+
+- **Button**
+  - Primary（プライマリボタン）
+  - Secondary（セカンダリボタン）
+  - PrimaryLoading（ローディング状態）
+  - Disabled（無効状態）
+
+- **Checkbox**
+  - Default（未チェック）
+  - Checked（チェック済み）
+  - WithLabel（ラベル付き）
+  - Disabled（無効状態）
+  - TermsOfService（利用規約同意）
+
+### 💡 開発ワークフロー
+
+**推奨: コンポーネント単位で開発**
+
+1. `components/ui/` にコンポーネントを作成
+2. `components/ui/*.stories.tsx` でストーリーを作成
+3. Storybookで動作確認
+4. 実際のページで統合
+
+### ⚙️ 設定ファイル
+
+| ファイル | 説明 |
+|---------|------|
+| `.storybook/main.ts` | Storybookの基本設定、アドオン |
+| `.storybook/preview.ts` | グローバルスタイル、パラメータ |
+
+### 🎯 利点
+
+1. ✅ **独立した開発環境**: アプリ全体を起動せずにコンポーネント確認
+2. ✅ **全パターンを一覧表示**: 様々なstateを簡単に確認
+3. ✅ **自動ドキュメント**: Props、型定義を自動抽出
+4. ✅ **デザイナーとの共有が簡単**: URLを共有するだけ
+5. ✅ **アクセシビリティ**: a11yアドオンで自動検証
 
 ## Issues
 
