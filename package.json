@@ -7,23 +7,27 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "mock": "prism mock openapi.yaml",
+    "mock:dynamic": "prism mock -d openapi.yaml",
+    "mock:port": "prism mock -p 4010 openapi.yaml"
   },
   "dependencies": {
+    "lucide-react": "^0.469.0",
     "next": "15.1.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "zod": "^4.1.11",
-    "lucide-react": "^0.469.0"
+    "zod": "^4.1.11"
   },
   "devDependencies": {
+    "@stoplight/prism-cli": "^5.14.2",
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "typescript": "^5",
-    "tailwindcss": "^4.1.0",
-    "postcss": "^8",
     "eslint": "^9",
-    "eslint-config-next": "15.1.4"
+    "eslint-config-next": "15.1.4",
+    "postcss": "^8",
+    "tailwindcss": "^4.1.0",
+    "typescript": "^5"
   }
 }
