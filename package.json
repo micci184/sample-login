@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@stoplight/prism-cli": "^5.14.2",
+    "@tailwindcss/postcss": "^4.1.14",
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
