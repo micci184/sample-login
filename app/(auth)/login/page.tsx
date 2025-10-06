@@ -3,7 +3,7 @@
 import { useState, useRef, FormEvent } from "react";
 import { Building2, Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { Input, Button, Checkbox } from "@/components/ui";
-import { loginSchema, type LoginInput } from "@/lib/schemas/auth";
+import { loginSchema, type LoginInput, type ErrorResponse } from "@/lib/schemas/auth";
 
 export default function LoginPage() {
   // フォーム状態
@@ -15,6 +15,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof LoginInput, string>>>({});
+  const [apiError, setApiError] = useState<string>("");
   
   // ref for focus management
   const emailRef = useRef<HTMLInputElement>(null);
@@ -23,6 +24,7 @@ export default function LoginPage() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrors({});
+    setApiError("");
     
     // Zodバリデーション
     const result = loginSchema.safeParse({ email, password, rememberMe });
@@ -50,15 +52,39 @@ export default function LoginPage() {
       return;
     }
     
-    // TODO: Issue #4 でAPI呼び出し実装
+    // API呼び出し
     setLoading(true);
-    console.log("ログイン試行:", result.data);
     
-    // モックローディング
-    setTimeout(() => {
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(result.data),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        // ログイン成功
+        console.log("ログイン成功:", data.user);
+        // TODO: リダイレクトや状態管理の実装（将来のIssue）
+        alert(`ログイン成功！\nユーザー: ${data.user.name}\nEmail: ${data.user.email}`);
+      } else {
+        // ログイン失敗
+        const errorData = data as ErrorResponse;
+        setApiError(errorData.message);
+        
+        // メールアドレスフィールドにフォーカス
+        emailRef.current?.focus();
+      }
+    } catch (error) {
+      console.error("ログインエラー:", error);
+      setApiError("ネットワークエラーが発生しました。もう一度お試しください。");
+    } finally {
       setLoading(false);
-      alert("TODO: API実装待ち（Issue #4）");
-    }, 1000);
+    }
   };
 
   return (
@@ -92,6 +118,17 @@ export default function LoginPage() {
           <h2 className="mb-8 text-center text-xl font-light leading-[1.4] text-[#101828]" style={{ fontFamily: 'Hiragino Kaku Gothic ProN, sans-serif' }}>
             ログイン
           </h2>
+
+          {/* APIエラーメッセージ */}
+          {apiError && (
+            <div
+              role="alert"
+              className="rounded-md bg-red-50 p-3 text-sm text-red-800"
+              style={{ fontFamily: 'Hiragino Kaku Gothic ProN, sans-serif' }}
+            >
+              {apiError}
+            </div>
+          )}
 
           {/* フォーム */}
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
