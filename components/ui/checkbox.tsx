@@ -41,7 +41,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
               w-4
               h-4
               border
-              rounded-none
+              rounded-[2.5px]
               cursor-pointer
               flex
               items-center
