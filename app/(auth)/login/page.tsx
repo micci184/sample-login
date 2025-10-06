@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useRef, FormEvent } from "react";
-import { Building2, Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { Input, Button, Checkbox } from "@/components/ui";
+import { BuildingIcon } from "@/components/ui/BuildingIcon";
 import { loginSchema, type LoginInput, type ErrorResponse } from "@/lib/schemas/auth";
 
 export default function LoginPage() {
@@ -70,7 +71,7 @@ export default function LoginPage() {
         // ログイン成功
         console.log("ログイン成功:", data.user);
         // TODO: リダイレクトや状態管理の実装（将来のIssue）
-        alert(`ログイン成功！\nユーザー: ${data.user.name}\nEmail: ${data.user.email}`);
+        alert(`ログインに成功しました\n\nユーザー: ${data.user.name}\nEmail: ${data.user.email}`);
       } else {
         // ログイン失敗
         const errorData = data as ErrorResponse;
@@ -93,8 +94,8 @@ export default function LoginPage() {
         {/* ヘッダー */}
         <div className="flex flex-col items-center">
           {/* アイコン背景 */}
-          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#155DFC] p-4">
-            <Building2 className="h-8 w-8 text-white" strokeWidth={2.67} />
+          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#155DFC]">
+            <BuildingIcon />
           </div>
           
           {/* タイトル */}
@@ -105,7 +106,7 @@ export default function LoginPage() {
           </div>
           
           {/* サブタイトル */}
-          <div className="mt-10 text-center">
+          <div className="mt-6 text-center">
             <p className="text-base font-light leading-[1.5] text-[#4A5565]" style={{ fontFamily: 'Hiragino Kaku Gothic ProN, sans-serif' }}>
               人事労務管理システムにログイン
             </p>
@@ -113,7 +114,7 @@ export default function LoginPage() {
         </div>
 
         {/* ログインカード */}
-        <div className="mt-16 rounded-[10px] bg-white px-6 pb-4 pt-6 shadow-[0px_1px_2px_-1px_rgba(0,0,0,0.1),0px_1px_3px_0px_rgba(0,0,0,0.1)]">
+        <div className="mt-8 rounded-[10px] bg-white px-6 pb-4 pt-6 shadow-[0px_1px_2px_-1px_rgba(0,0,0,0.1),0px_1px_3px_0px_rgba(0,0,0,0.1)]">
           {/* カード見出し */}
           <h2 className="mb-8 text-center text-xl font-light leading-[1.4] text-[#101828]" style={{ fontFamily: 'Hiragino Kaku Gothic ProN, sans-serif' }}>
             ログイン
@@ -145,7 +146,7 @@ export default function LoginPage() {
                 ref={emailRef}
                 id="email"
                 type="email"
-                placeholder="メールアドレスを入力"
+                placeholder="your-email@company.com"
                 icon={Mail}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -224,7 +225,7 @@ export default function LoginPage() {
               />
               <a
                 href="#"
-                className="text-sm font-light text-[#6A7282] hover:underline focus:outline-none focus:ring-2 focus:ring-[#155DFC] focus:ring-offset-2"
+                className="text-sm font-light text-[#155DFC] hover:underline focus:outline-none focus:ring-2 focus:ring-[#155DFC] focus:ring-offset-2"
                 style={{ fontFamily: 'Hiragino Kaku Gothic ProN, sans-serif' }}
                 onClick={(e) => {
                   e.preventDefault();
@@ -232,7 +233,7 @@ export default function LoginPage() {
                   alert("TODO: パスワード再設定機能（別Issue）");
                 }}
               >
-                パスワードをお忘れの方
+                パスワードを忘れた方
               </a>
             </div>
 
@@ -247,12 +248,17 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          {/* 区切り線 */}
+          {/* 区切り線（または） */}
           <div className="relative my-6">
             <div className="w-full border-t border-[#D1D5DC]"></div>
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-4">
+              <span className="text-sm font-light text-[#6A7282]" style={{ fontFamily: 'Hiragino Kaku Gothic ProN, sans-serif' }}>
+                または
+              </span>
+            </div>
           </div>
 
-          {/* 初めてご利用の方 */}
+          {/* デモアカウントでログイン */}
           <div className="text-center">
             <a
               href="#"
@@ -260,13 +266,20 @@ export default function LoginPage() {
               style={{ fontFamily: 'Hiragino Kaku Gothic ProN, sans-serif' }}
               onClick={(e) => {
                 e.preventDefault();
-                // TODO: 別Issueで新規登録実装
-                alert("TODO: 新規登録機能（別Issue）");
+                // TODO: 別Issueでデモアカウント実装
+                alert("TODO: デモアカウント機能（別Issue）");
               }}
             >
-              初めてご利用の方
+              デモアカウントでログイン
             </a>
           </div>
+        </div>
+
+        {/* カード外のサポート案内 */}
+        <div className="mt-4 text-center text-xs font-light text-[#6A7282]" style={{ fontFamily: 'Hiragino Kaku Gothic ProN, sans-serif' }}>
+          <p>
+            お困りの場合は、システム管理者にお問い合わせください。
+          </p>
         </div>
       </div>
     </div>

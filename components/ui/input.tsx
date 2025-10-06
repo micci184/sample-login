@@ -47,7 +47,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             px-[13px]
             ${Icon ? "pl-[41px]" : ""}
             border
-            rounded-none
+            rounded-[10px]
             text-base
             font-normal
             leading-[1.19]

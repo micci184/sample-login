@@ -32,7 +32,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       text-base
       font-light
       leading-6
-      rounded-none
+      rounded-[10px]
       transition-colors
       focus:outline-none
       focus:ring-2
