@@ -11,6 +11,10 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:report": "playwright show-report",
     "mock": "prism mock openapi.yaml",
     "mock:dynamic": "prism mock -d openapi.yaml",
     "mock:port": "prism mock -p 4010 openapi.yaml"
@@ -23,6 +27,7 @@
     "zod": "^4.1.11"
   },
   "devDependencies": {
+    "@playwright/test": "^1.56.0",
     "@stoplight/prism-cli": "^5.14.2",
     "@tailwindcss/postcss": "^4.1.14",
     "@types/node": "^22",
